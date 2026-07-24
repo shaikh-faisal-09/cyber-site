@@ -15,6 +15,7 @@ type QuoteStepHelpProps = {
   stepSubtitle?: string
   stepTip?: string
   answered: boolean
+  showToggle?: boolean
   className?: string
   children?: (parts: { toggle: ReactNode; panel: ReactNode }) => ReactNode
 }
@@ -25,6 +26,7 @@ export function QuoteStepHelp({
   stepSubtitle,
   stepTip,
   answered,
+  showToggle = true,
   className,
   children,
 }: QuoteStepHelpProps) {
@@ -93,6 +95,10 @@ export function QuoteStepHelp({
 
   if (answered) return null
 
+  if (!showToggle) {
+    return children ? <>{children({ toggle: null, panel: null })}</> : null
+  }
+
   const toggle = (
     <AnimatePresence mode="wait" initial={false}>
       {!open && (
@@ -106,7 +112,7 @@ export function QuoteStepHelp({
           className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-electric/20 bg-electric/[0.06] px-3 py-1.5 text-[12px] font-medium text-electric transition hover:border-electric/35 hover:bg-electric/10 sm:gap-2 sm:px-4 sm:py-2 sm:text-[13px]"
         >
           <MessageCircleQuestion className="size-3.5 opacity-80 sm:size-4" aria-hidden />
-          <span className="hidden sm:inline">Need a hand with this question?</span>
+          <span className="hidden sm:inline">Need help?</span>
           <span className="sm:hidden">Get help</span>
         </motion.button>
       )}

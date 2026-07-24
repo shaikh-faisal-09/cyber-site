@@ -39,17 +39,10 @@ const SECURITY_WEIGHTS: Record<string, number> = {
   incidentResponse: 12,
 }
 
-const BUSINESS_WEIGHTS = {
-  industry: 10,
-  revenue: 8,
-  employees: 8,
-  cloudServices: 6,
-  operates: 8,
-  data: 10,
-  payments: 6,
-} as const
-
 const GOOD_NO = new Set(['endpointControls'])
+const SCORE_GAIN = 5
+const SCORE_PENALTY = 2
+const LOWER_RISK_POSTURE = 0.65
 
 function valueScore(key: string, answer?: string): number {
   if (!answer) return 0
@@ -60,64 +53,6 @@ function valueScore(key: string, answer?: string): number {
 }
 
 /** 0–1 posture score — higher = lower cyber risk for this answer */
-function industryPosture(industry?: string): number | null {
-  if (!industry) return null
-  const scores: Record<string, number> = {
-    Construction: 0.88,
-    'Professional Services': 0.76,
-    Other: 0.72,
-    Education: 0.7,
-    Logistics: 0.68,
-    Technology: 0.65,
-    Manufacturing: 0.64,
-    Hospitality: 0.62,
-    Retail: 0.58,
-    'Government Contractor': 0.48,
-    Healthcare: 0.45,
-    'Financial Services': 0.38,
-  }
-  return scores[industry] ?? 0.65
-}
-
-function tierPosture(value: number, tiers: readonly (readonly [number, number])[]): number {
-  for (const [max, score] of tiers) {
-    if (value <= max) return score
-  }
-  return tiers[tiers.length - 1][1]
-}
-
-function revenuePosture(revenue?: number): number | null {
-  if (revenue == null) return null
-  return tierPosture(revenue, [
-    [500_000, 0.88],
-    [1_000_000, 0.78],
-    [2_500_000, 0.68],
-    [5_000_000, 0.58],
-    [10_000_000, 0.48],
-    [25_000_000, 0.38],
-    [50_000_000, 0.28],
-  ] as const)
-}
-
-function employeesPosture(employees?: number): number | null {
-  if (employees == null) return null
-  return tierPosture(employees, [
-    [10, 0.86],
-    [25, 0.76],
-    [50, 0.66],
-    [100, 0.56],
-    [250, 0.46],
-    [500, 0.36],
-  ] as const)
-}
-
-function cloudServicesPosture(answer?: string): number | null {
-  if (!answer) return null
-  if (answer === 'no') return 0.72
-  if (answer === 'yes') return 0.58
-  return 0.48
-}
-
 function operatesPosture(operates?: string): number | null {
   if (!operates) return null
   const scores: Record<string, number> = {
@@ -143,35 +78,28 @@ function paymentsPosture(payments?: string): number | null {
 }
 
 export function calcScore(a: Answers): number {
-  let weighted = 0
-  let answeredWeight = 0
-
-  const businessEntries: [keyof typeof BUSINESS_WEIGHTS, number | null][] = [
-    ['industry', industryPosture(a.industry)],
-    ['revenue', revenuePosture(a.revenue)],
-    ['employees', employeesPosture(a.employees)],
-    ['cloudServices', cloudServicesPosture(a.cloudServices)],
-    ['operates', operatesPosture(a.operates)],
-    ['data', dataPosture(a.data)],
-    ['payments', paymentsPosture(a.payments)],
+  // The score begins with the security-and-exposure questions. Business profile
+  // answers above (industry, revenue and headcount) influence pricing only.
+  const businessPostures = [
+    a.cloudServices === undefined ? null : a.cloudServices === 'yes' ? 1 : 0,
+    a.operates === undefined ? null : operatesPosture(a.operates),
+    dataPosture(a.data),
+    paymentsPosture(a.payments),
   ]
+  let score = 0
 
-  for (const [key, posture] of businessEntries) {
+  for (const posture of businessPostures) {
     if (posture == null) continue
-    const weight = BUSINESS_WEIGHTS[key]
-    answeredWeight += weight
-    weighted += weight * posture
+    score += posture >= LOWER_RISK_POSTURE ? SCORE_GAIN : -SCORE_PENALTY
   }
 
-  for (const [key, weight] of Object.entries(SECURITY_WEIGHTS)) {
+  for (const key of Object.keys(SECURITY_WEIGHTS)) {
     const answer = a[key as keyof Answers] as string | undefined
     if (!answer) continue
-    answeredWeight += weight
-    weighted += weight * valueScore(key, answer)
+    score += valueScore(key, answer) === 1 ? SCORE_GAIN : -SCORE_PENALTY
   }
 
-  if (answeredWeight === 0) return 0
-  return Math.round((weighted / answeredWeight) * 100)
+  return Math.max(0, Math.min(100, score))
 }
 
 /** Subscribe to live cyber score derived from all answered questions */
@@ -180,9 +108,9 @@ export function useQuoteScore(): number {
 }
 
 export function scoreGrade(score: number): { label: string; color: string } {
-  if (score >= 85) return { label: 'Excellent', color: '#00C2FF' }
-  if (score >= 70) return { label: 'Good', color: '#1976FF' }
-  if (score >= 55) return { label: 'Fair', color: '#FFB020' }
+  if (score >= 50) return { label: 'Excellent', color: '#00C2FF' }
+  if (score >= 35) return { label: 'Good', color: '#1976FF' }
+  if (score >= 20) return { label: 'Fair', color: '#FFB020' }
   return { label: 'Poor', color: '#FF5470' }
 }
 

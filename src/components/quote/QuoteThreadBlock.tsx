@@ -68,6 +68,7 @@ export function QuoteThreadBlock({
               stepSubtitle={subtitle}
               stepTip={stepTip}
               answered={answered}
+              showToggle={stepId !== 'employees'}
             >
               {({ toggle, panel }) => (
                 <>

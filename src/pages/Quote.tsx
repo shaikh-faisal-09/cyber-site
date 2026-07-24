@@ -26,10 +26,11 @@ import { QuotePaymentPanel } from '@/components/quote/QuotePaymentPanel'
 import { QuoteDocCollectionPanel } from '@/components/quote/QuoteDocCollectionPanel'
 import { QuotePolicyPanel } from '@/components/quote/QuotePolicyPanel'
 import { ChoiceButton } from '@/components/quote/ChoiceButton'
-import { OptionChip, REVENUE_CHIPS, EMPLOYEE_CHIPS } from '@/components/quote/OptionChip'
+import { OptionChip, EMPLOYEE_CHIPS } from '@/components/quote/OptionChip'
 import { YesNoUnsure } from '@/components/quote/YesNoUnsure'
 import { ContinueButton } from '@/components/quote/ContinueButton'
 import { TipBlock } from '@/components/quote/TipBlock'
+import { Slider } from '@/components/ui/slider'
 import {
   useQuote,
   useQuoteScore,
@@ -133,6 +134,33 @@ const LOADING_CHECKS = [
   'Finalizing your quote…',
 ]
 
+const REVENUE_SLIDER_MIN = 100_000
+const REVENUE_SLIDER_MAX = 50_000_000
+const REVENUE_SLIDER_STEP = 100_000
+
+function formatAed(amount: number) {
+  return `AED ${formatRevenueNumber(amount)}`
+}
+
+function formatRevenueNumber(amount: number) {
+  return new Intl.NumberFormat('en-AE', { maximumFractionDigits: 0 }).format(amount)
+}
+
+const INDUSTRY_IMAGES: Record<(typeof INDUSTRIES)[number], string> = {
+  Technology: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
+  Healthcare: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80',
+  Retail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80',
+  Manufacturing: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=900&q=80',
+  Education: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80',
+  'Professional Services': 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=80',
+  Construction: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80',
+  Hospitality: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80',
+  Logistics: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=80',
+  'Financial Services': 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80',
+  'Government Contractor': 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=900&q=80',
+  Other: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80',
+}
+
 export default function QuotePage() {
   const {
     step,
@@ -224,43 +252,107 @@ export default function QuotePage() {
     switch (stepDef.id) {
       case 'industry':
         return (
-          <AnswerGrid>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
             {INDUSTRIES.map((ind) => {
               const { icon, bg } = getOptionIcon(INDUSTRY_ICONS, ind)
+              const selected = answers.industry === ind
+              const Icon = icon
               return (
-                <ChoiceButton
+                <motion.button
                   key={ind}
-                  label={ind}
-                  icon={icon}
-                  iconBg={bg}
-                  selected={answers.industry === ind}
+                  type="button"
+                  whileTap={{ scale: 0.98 }}
+                  className={`group relative flex min-h-[158px] flex-col justify-between overflow-hidden rounded-2xl p-4 text-left transition sm:min-h-[170px] sm:p-5 ${
+                    selected
+                      ? 'ring-2 ring-electric ring-offset-2 ring-offset-white'
+                      : 'hover:-translate-y-1 hover:shadow-lg'
+                  }`}
                   onClick={() => {
                     setAnswer('industry', ind)
                     maybeAdvance()
                   }}
-                />
+                  aria-pressed={selected}
+                >
+                  <img
+                    src={INDUSTRY_IMAGES[ind]}
+                    alt=""
+                    className="absolute inset-0 size-full object-cover opacity-65 transition duration-500 group-hover:scale-105 group-hover:opacity-80"
+                    loading="lazy"
+                  />
+                  <span className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/60 to-navy-deep/15" aria-hidden />
+                  <span
+                    className="relative flex size-10 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105"
+                    style={{ backgroundColor: bg }}
+                  >
+                    {Icon && <Icon className="size-5 text-white" strokeWidth={1.75} aria-hidden />}
+                  </span>
+                  <span className="relative mt-5 font-display text-base leading-snug text-white sm:text-lg">{ind}</span>
+                </motion.button>
               )
             })}
-          </AnswerGrid>
+          </div>
         )
 
       case 'revenue':
+        const revenue = answers.revenue
+        const sliderRevenue = Math.min(
+          REVENUE_SLIDER_MAX,
+          Math.max(REVENUE_SLIDER_MIN, revenue ?? 1_000_000),
+        )
         return (
-          <AnswerGrid cols={3}>
-            {REVENUE_CHIPS.map(({ value, label, bg }) => (
-              <OptionChip
-                key={value}
-                label={label}
-                icon={DollarSign}
-                iconBg={bg}
-                selected={answers.revenue === value}
-                onClick={() => {
-                  setAnswer('revenue', value)
-                  maybeAdvance()
-                }}
+          <div className="rounded-3xl border border-navy/10 bg-white p-5 shadow-[0_12px_40px_rgba(6,26,64,0.08)] sm:p-7">
+            <div className="flex flex-col gap-1 border-b border-navy/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-sm font-medium text-navy/65">Estimated annual revenue</p>
+                <p className="mt-1 text-xs text-navy/45">Drag the slider or enter an exact amount below.</p>
+              </div>
+              <output className="font-display text-2xl font-semibold text-navy sm:text-3xl">
+                {formatAed(revenue ?? sliderRevenue)}
+              </output>
+            </div>
+
+            <div className="py-7">
+              <Slider
+                min={REVENUE_SLIDER_MIN}
+                max={REVENUE_SLIDER_MAX}
+                step={REVENUE_SLIDER_STEP}
+                value={[sliderRevenue]}
+                onValueChange={([value]) => setAnswer('revenue', value)}
+                aria-label="Annual revenue in AED"
               />
-            ))}
-          </AnswerGrid>
+              <div className="mt-3 flex justify-between text-xs font-medium text-navy/45">
+                <span>{formatAed(REVENUE_SLIDER_MIN)}</span>
+                <span>{formatAed(REVENUE_SLIDER_MAX)}+</span>
+              </div>
+            </div>
+
+            <label className="block">
+              <span className="text-sm font-medium text-navy">Or enter your annual revenue</span>
+              <span className="mt-2 flex items-center overflow-hidden rounded-xl border border-navy/15 bg-[#f8fafc] transition focus-within:border-electric focus-within:ring-2 focus-within:ring-electric/15">
+                <span className="border-r border-navy/10 px-4 py-3 text-sm font-semibold text-navy/65">AED</span>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={revenue ? formatRevenueNumber(revenue) : ''}
+                  onChange={(event) => {
+                    const digits = event.target.value.replace(/\D/g, '')
+                    setAnswer('revenue', digits ? Number(digits) : undefined)
+                  }}
+                  placeholder="e.g. 2500000"
+                  className="min-w-0 flex-1 bg-transparent px-4 py-3 text-base font-medium text-navy outline-none placeholder:text-navy/35"
+                  aria-describedby="revenue-input-help"
+                />
+              </span>
+              <span id="revenue-input-help" className="mt-2 block text-xs text-navy/45">
+                Enter numbers only. Amounts above AED 50,000,000 are accepted.
+              </span>
+            </label>
+
+            <div className="mt-6">
+              <ContinueButton onClick={next} disabled={!revenue || revenue <= 0} />
+            </div>
+          </div>
         )
 
       case 'employees':
