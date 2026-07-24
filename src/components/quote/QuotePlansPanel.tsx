@@ -6,7 +6,7 @@ import { Slider } from '@/components/ui/slider'
 import { ScoreGauge } from './ScoreGauge'
 import { PremiumTipsGrid } from './PremiumTipsGrid'
 import { LIMITS, PLANS, FEATURE_LIST, getPlanPremium, PLAN_DEDUCTIBLE_OPTIONS, type Answers, type PlanId } from '@/lib/quote-store'
-import { getApplicablePremiumTips } from '@/lib/premium-tips'
+import { getAcceptedPremiumDiscount, getApplicablePremiumTips } from '@/lib/premium-tips'
 import { fmtNumber } from '@/lib/utils'
 
 function fmtLimit(n: number): string {
@@ -43,18 +43,35 @@ export function QuotePlansPanel({
 }: QuotePlansPanelProps) {
   const limit = LIMITS[limitIndex]
   const applicableTips = useMemo(() => getApplicablePremiumTips(answers), [answers])
+  const acceptedDiscount = useMemo(
+    () => getAcceptedPremiumDiscount(acceptedImprovements),
+    [acceptedImprovements],
+  )
 
   const planPrices = useMemo(
     () =>
       PLANS.map((plan) => {
         const selectedDeductible = planDeductibles[plan.id]
-        const annual = getPlanPremium(basePremium, plan.id, limitIndex, selectedDeductible)
-        return { ...plan, annual, selectedDeductible }
+        const standardAnnual = getPlanPremium(basePremium, plan.id, limitIndex, selectedDeductible)
+        const annual = getPlanPremium(
+          basePremium,
+          plan.id,
+          limitIndex,
+          selectedDeductible,
+          acceptedDiscount,
+        )
+        return { ...plan, annual, standardAnnual, selectedDeductible }
       }),
-    [basePremium, limitIndex, planDeductibles],
+    [acceptedDiscount, basePremium, limitIndex, planDeductibles],
   )
 
-  const basicAnnual = getPlanPremium(basePremium, 'basic', limitIndex, planDeductibles.basic)
+  const basicAnnual = getPlanPremium(
+    basePremium,
+    'basic',
+    limitIndex,
+    planDeductibles.basic,
+    acceptedDiscount,
+  )
 
   return (
     <div className="quote-shell flex h-[100dvh] flex-col overflow-hidden">
@@ -227,6 +244,11 @@ export function QuotePlansPanel({
                 <p className="mt-2 text-[15px] text-ink-muted">
                   Based on your answers, commit to these improvements within 30 days to unlock discounts.
                 </p>
+                {acceptedDiscount > 0 && (
+                  <p className="mt-3 text-[13px] font-semibold text-[#16a34a]">
+                    {acceptedDiscount}% premium discount applied to every plan.
+                  </p>
+                )}
               </div>
               <PremiumTipsGrid
                 tips={applicableTips}

@@ -106,6 +106,19 @@ export const PREMIUM_TIPS: PremiumTip[] = [
   },
 ]
 
+/** Keep improvement commitments meaningful without allowing discounts to erase the risk premium. */
+export const MAX_COMBINED_PREMIUM_DISCOUNT = 25
+
+export function getAcceptedPremiumDiscount(acceptedIds: readonly string[]): number {
+  const accepted = new Set(acceptedIds)
+  const total = PREMIUM_TIPS.reduce(
+    (sum, tip) => sum + (accepted.has(tip.id) ? tip.discount : 0),
+    0,
+  )
+
+  return Math.min(MAX_COMBINED_PREMIUM_DISCOUNT, total)
+}
+
 export function getApplicablePremiumTips(answers: Answers): PremiumTip[] {
   return PREMIUM_TIPS.filter((tip) => answers[tip.answerKey] === tip.triggerAnswer)
 }

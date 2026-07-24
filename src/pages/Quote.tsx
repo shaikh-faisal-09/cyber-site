@@ -54,6 +54,7 @@ import {
   DATA_TYPE_ICONS,
   getOptionIcon,
 } from '@/lib/quote-option-icons'
+import { getAcceptedPremiumDiscount } from '@/lib/premium-tips'
 
 type StepDef = {
   id: string
@@ -189,6 +190,10 @@ export default function QuotePage() {
   const [revenueInput, setRevenueInput] = useState('')
   const score = useQuoteScore()
   const premium = useMemo(() => estimatePremium(answers, score), [answers, score])
+  const acceptedDiscount = useMemo(
+    () => getAcceptedPremiumDiscount(acceptedImprovements),
+    [acceptedImprovements],
+  )
   const questionSteps = QUESTION_STEPS.length
   const isLoading = step === STEP_LOADING
   const isPlans = step === STEP_PLANS
@@ -203,8 +208,9 @@ export default function QuotePage() {
       selectedPlanId,
       policyLimitIndex,
       selectedDeductible ?? planDeductibles[selectedPlanId],
+      acceptedDiscount,
     )
-  }, [premium, selectedPlanId, policyLimitIndex, selectedDeductible, planDeductibles])
+  }, [premium, selectedPlanId, policyLimitIndex, selectedDeductible, planDeductibles, acceptedDiscount])
 
   const progressPct =
     isPlans || isLoading || isPayment || isDocs || isPolicy

@@ -361,6 +361,7 @@ export function getPlanPremium(
   planId: PlanId,
   limitIndex: number,
   deductible?: number,
+  improvementDiscount = 0,
 ): number {
   const plan = PLANS.find((p) => p.id === planId)
   if (!plan) return basePremium
@@ -368,7 +369,8 @@ export function getPlanPremium(
   const limitFactor = Math.pow(limit / 1_000_000, 0.6)
   const ded = deductible ?? plan.deductible
   const deductibleFactor = deductiblePremiumFactor(ded, plan.deductible)
-  return planAnnualPremium(basePremium, plan.multiplier, limitFactor, deductibleFactor)
+  const discountFactor = 1 - Math.min(100, Math.max(0, improvementDiscount)) / 100
+  return planAnnualPremium(basePremium * discountFactor, plan.multiplier, limitFactor, deductibleFactor)
 }
 
 export const PLANS = [
