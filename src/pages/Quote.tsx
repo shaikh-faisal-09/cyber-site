@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import {
   ShieldCheck,
@@ -134,9 +134,12 @@ const LOADING_CHECKS = [
   'Finalizing your quote…',
 ]
 
-const REVENUE_SLIDER_MIN = 100_000
+const REVENUE_STEP_INDEX = QUESTION_STEPS.findIndex((step) => step.id === 'revenue')
+
+const REVENUE_SLIDER_MIN = 0
 const REVENUE_SLIDER_MAX = 50_000_000
 const REVENUE_SLIDER_STEP = 100_000
+const REVENUE_DEFAULT = 100_000
 
 function formatAed(amount: number) {
   return `AED ${formatRevenueNumber(amount)}`
@@ -183,6 +186,7 @@ export default function QuotePage() {
     goto,
   } = useQuote()
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [revenueInput, setRevenueInput] = useState('')
   const score = useQuoteScore()
   const premium = useMemo(() => estimatePremium(answers, score), [answers, score])
   const questionSteps = QUESTION_STEPS.length
@@ -223,6 +227,13 @@ export default function QuotePage() {
     const timer = setTimeout(next, 2800)
     return () => clearTimeout(timer)
   }, [isLoading, next])
+
+  useEffect(() => {
+    if (step !== REVENUE_STEP_INDEX) return
+    const defaultRevenue = answers.revenue ?? REVENUE_DEFAULT
+    setRevenueInput(formatRevenueNumber(defaultRevenue))
+    if (answers.revenue === undefined) setAnswer('revenue', defaultRevenue)
+  }, [step])
 
   const handleSelectPlan = (planId: PlanId) => {
     setSelectedPlan(planId)
@@ -297,7 +308,7 @@ export default function QuotePage() {
         const revenue = answers.revenue
         const sliderRevenue = Math.min(
           REVENUE_SLIDER_MAX,
-          Math.max(REVENUE_SLIDER_MIN, revenue ?? 1_000_000),
+          Math.max(REVENUE_SLIDER_MIN, revenue ?? REVENUE_DEFAULT),
         )
         return (
           <div className="rounded-3xl border border-navy/10 bg-white p-5 shadow-[0_12px_40px_rgba(6,26,64,0.08)] sm:p-7">
@@ -317,13 +328,12 @@ export default function QuotePage() {
                 max={REVENUE_SLIDER_MAX}
                 step={REVENUE_SLIDER_STEP}
                 value={[sliderRevenue]}
-                onValueChange={([value]) => setAnswer('revenue', value)}
+                onValueChange={([value]) => {
+                  setAnswer('revenue', value)
+                  setRevenueInput(formatRevenueNumber(value))
+                }}
                 aria-label="Annual revenue in AED"
               />
-              <div className="mt-3 flex justify-between text-xs font-medium text-navy/45">
-                <span>{formatAed(REVENUE_SLIDER_MIN)}</span>
-                <span>{formatAed(REVENUE_SLIDER_MAX)}+</span>
-              </div>
             </div>
 
             <label className="block">
@@ -334,9 +344,10 @@ export default function QuotePage() {
                   type="text"
                   inputMode="numeric"
                   pattern="[0-9]*"
-                  value={revenue ? formatRevenueNumber(revenue) : ''}
+                  value={revenueInput}
                   onChange={(event) => {
                     const digits = event.target.value.replace(/\D/g, '')
+                    setRevenueInput(digits ? formatRevenueNumber(Number(digits)) : '')
                     setAnswer('revenue', digits ? Number(digits) : undefined)
                   }}
                   placeholder="e.g. 2500000"
