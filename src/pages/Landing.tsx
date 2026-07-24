@@ -82,18 +82,18 @@ const stats = [
   },
   {
     label: "Middle East average breach cost",
-    value: "SAR 27M",
+    value: "AED 26.4M",
     unit: "",
-    detail: "Down ~18% from SAR 32.8M · ≈ USD 7.2M / AED 26.4M",
+    detail: "Down ~18% from AED 32.1M · IBM Cost of a Data Breach 2025",
     icon: DollarSign,
     accent: "#a78bfa",
     bg: "rgba(167,139,250,0.12)",
   },
   {
     label: "UAE cyber insurance market",
-    value: "USD 83.74M",
+    value: "AED 307.5M",
     unit: "",
-    detail: "2025 · projected USD 350.24M by 2034 (17.23% CAGR)",
+    detail: "2025 · projected AED 1.29B by 2034 (17.23% CAGR)",
     icon: BarChart3,
     accent: "#c8f060",
     bg: "rgba(200,240,96,0.14)",
@@ -570,16 +570,16 @@ export default function LandingPage() {
         <ScrollElasticSection className="relative overflow-hidden border-b border-border bg-navy-deep text-white">
           <SectionIllustration
             name="hacker-mindset"
-            className="-right-10 top-6 hidden h-80 w-80 text-cyan md:block"
+            className="-right-10 top-6 z-0 hidden h-80 w-80 text-cyan md:block"
             accentClassName="text-cyan"
             opacity={0.07}
           />
           <SectionIllustration
             name="firewall"
-            className="-left-16 bottom-0 hidden h-72 w-72 text-electric sm:block"
+            className="-left-16 bottom-0 z-0 hidden h-72 w-72 text-electric sm:block"
             opacity={0.08}
           />
-          <Container className="relative section-pad">
+          <Container className="relative z-10 section-pad">
             <div className="mx-auto mb-10 max-w-2xl text-center">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan">
                 The cyber risk landscape
@@ -599,10 +599,10 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ ...revealSpring, delay: i * 0.06 }}
-                  className={`group relative overflow-hidden rounded-2xl border p-5 transition-transform hover:-translate-y-1 sm:p-6 ${
+                  className={`group relative z-10 overflow-hidden rounded-2xl border p-5 transition-transform hover:-translate-y-1 sm:p-6 ${
                     stat.highlight
                       ? "border-accent/40 bg-gradient-to-br from-accent/20 via-white/10 to-electric/10 shadow-[0_0_40px_rgba(200,240,96,0.15)]"
-                      : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/8"
+                      : "border-white/10 bg-[#102950]/95 hover:border-white/20 hover:bg-[#102950]"
                   }`}
                 >
                   <div
