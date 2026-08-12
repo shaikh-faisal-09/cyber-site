@@ -208,6 +208,7 @@ export default function QuotePage() {
     next,
     prev,
     goto,
+    reset,
   } = useQuote()
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [revenueInput, setRevenueInput] = useState('')
@@ -546,6 +547,7 @@ export default function QuotePage() {
           annualPremium={selectedPremium}
           tradeLicenseName={tradeLicenseName}
           onBack={() => goto(STEP_DOCS)}
+          onRestart={reset}
         />
       </>
     )
@@ -559,6 +561,7 @@ export default function QuotePage() {
           fileName={tradeLicenseName}
           onFileSelect={setTradeLicense}
           onBack={() => goto(STEP_PAYMENT)}
+          onRestart={reset}
           onContinue={next}
         />
       </>
@@ -573,6 +576,7 @@ export default function QuotePage() {
           planId={selectedPlanId}
           annualPremium={selectedPremium}
           onBack={() => goto(STEP_PLANS)}
+          onRestart={reset}
           onComplete={() => {
             setPaymentComplete(true)
             next()
@@ -602,6 +606,7 @@ export default function QuotePage() {
           onToggleImprovement={toggleAcceptedImprovement}
           onSelectPlan={handleSelectPlan}
           onBack={() => goto(STEP_LOADING)}
+          onRestart={reset}
         />
       </>
     )
@@ -623,6 +628,7 @@ export default function QuotePage() {
         isLoading={isLoading}
         canGoBack={step > 0 && !isLoading}
         onBack={prev}
+        onRestart={reset}
       >
         {(isLoading ? QUESTION_STEPS : QUESTION_STEPS.slice(0, step + 1)).map((stepDef, i) => (
           <QuoteThreadBlock

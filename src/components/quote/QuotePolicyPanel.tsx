@@ -24,6 +24,7 @@ type QuotePolicyPanelProps = {
   annualPremium: number
   tradeLicenseName: string | null
   onBack: () => void
+  onRestart?: () => void
 }
 
 const SUMMARY_FIELDS = [
@@ -45,6 +46,7 @@ export function QuotePolicyPanel({
   annualPremium,
   tradeLicenseName,
   onBack,
+  onRestart,
 }: QuotePolicyPanelProps) {
   const policyNumber = useMemo(() => generatePolicyNumber(), [])
   const plan = PLANS.find((p) => p.id === planId)
@@ -64,6 +66,7 @@ export function QuotePolicyPanel({
       subtitle="Review your coverage details below. This is a demo policy document."
       stepLabel="Policy issued"
       onBack={onBack}
+      onRestart={onRestart}
     >
       <div className="rounded-[20px] bg-white p-5 sm:p-6">
         <div className="flex items-center gap-3 border-b border-[#f2f2f7] pb-5">

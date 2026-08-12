@@ -11,9 +11,10 @@ type QuotePaymentPanelProps = {
   annualPremium: number
   onBack: () => void
   onComplete: () => void
+  onRestart?: () => void
 }
 
-export function QuotePaymentPanel({ planId, annualPremium, onBack, onComplete }: QuotePaymentPanelProps) {
+export function QuotePaymentPanel({ planId, annualPremium, onBack, onComplete, onRestart }: QuotePaymentPanelProps) {
   const [processing, setProcessing] = useState(false)
   const plan = PLANS.find((p) => p.id === planId)
 
@@ -31,6 +32,7 @@ export function QuotePaymentPanel({ planId, annualPremium, onBack, onComplete }:
       subtitle="This is a demo checkout — no real charge will be made."
       stepLabel="Payment"
       onBack={onBack}
+      onRestart={onRestart}
     >
       <div className="rounded-[20px] bg-white p-5 sm:p-6">
         <div className="mb-6 flex items-center justify-between border-b border-[#f2f2f7] pb-4">

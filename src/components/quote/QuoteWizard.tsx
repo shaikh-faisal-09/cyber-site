@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, X } from 'lucide-react'
+import { ArrowLeft, X, RotateCcw } from 'lucide-react'
 import { motion } from 'motion/react'
 import { ScoreGauge } from './ScoreGauge'
 import { ScoreInsight, ScoreIntroHint, ScoreBenchmark } from './ScoreInsight'
@@ -13,6 +13,7 @@ type QuoteWizardProps = {
   isLoading: boolean
   canGoBack: boolean
   onBack: () => void
+  onRestart?: () => void
   pageTitle?: string
   children: React.ReactNode
 }
@@ -25,6 +26,7 @@ export function QuoteWizard({
   isLoading,
   canGoBack,
   onBack,
+  onRestart,
   pageTitle = 'Get your cyber quote',
   children,
 }: QuoteWizardProps) {
@@ -90,9 +92,8 @@ export function QuoteWizard({
               return (
                 <div
                   key={i}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    active ? 'w-6 bg-white' : done ? 'w-2 bg-white/50' : 'w-1 bg-white/20'
-                  }`}
+                  className={`h-1 rounded-full transition-all duration-300 ${active ? 'w-6 bg-white' : done ? 'w-2 bg-white/50' : 'w-1 bg-white/20'
+                    }`}
                 />
               )
             })}
@@ -113,6 +114,17 @@ export function QuoteWizard({
               )}
               <ScoreInsight score={score} inverted />
             </div>
+            {onRestart && (
+              <button
+                type="button"
+                onClick={onRestart}
+                className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
+                aria-label="Restart quote"
+                title="Restart quote"
+              >
+                <RotateCcw className="size-4" />
+              </button>
+            )}
             <Link
               to="/"
               className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"

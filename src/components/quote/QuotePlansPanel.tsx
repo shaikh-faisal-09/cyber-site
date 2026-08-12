@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowLeft, Check, Minus, X, ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowLeft, Check, Minus, X, ArrowRight, Sparkles, RotateCcw } from 'lucide-react'
 import { Slider } from '@/components/ui/slider'
 import { ScoreGauge } from './ScoreGauge'
 import { PremiumTipsGrid } from './PremiumTipsGrid'
@@ -26,6 +26,7 @@ type QuotePlansPanelProps = {
   onToggleImprovement: (tipId: string) => void
   onSelectPlan: (planId: PlanId) => void
   onBack?: () => void
+  onRestart?: () => void
 }
 
 export function QuotePlansPanel({
@@ -40,6 +41,7 @@ export function QuotePlansPanel({
   onToggleImprovement,
   onSelectPlan,
   onBack,
+  onRestart,
 }: QuotePlansPanelProps) {
   const limit = LIMITS[limitIndex]
   const applicableTips = useMemo(() => getApplicablePremiumTips(answers), [answers])
@@ -93,13 +95,26 @@ export function QuotePlansPanel({
           )}
         </div>
         <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/40">Your quote</span>
-        <Link
-          to="/"
-          className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
-          aria-label="Exit"
-        >
-          <X className="size-4" />
-        </Link>
+        <div className="flex items-center gap-2">
+          {onRestart && (
+            <button
+              type="button"
+              onClick={onRestart}
+              className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
+              aria-label="Restart quote"
+              title="Restart quote"
+            >
+              <RotateCcw className="size-4" />
+            </button>
+          )}
+          <Link
+            to="/"
+            className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
+            aria-label="Exit"
+          >
+            <X className="size-4" />
+          </Link>
+        </div>
       </nav>
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-4 lg:p-5">
@@ -163,8 +178,8 @@ export function QuotePlansPanel({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
                 className={`relative flex flex-col rounded-[20px] border p-5 sm:p-6 ${plan.id === 'value'
-                    ? 'border-[#1976FF]/50 bg-white shadow-[0_0_0_1px_#1976FF,0_12px_40px_rgba(25,118,255,0.12)]'
-                    : 'border-navy-deep/10 bg-white'
+                  ? 'border-[#1976FF]/50 bg-white shadow-[0_0_0_1px_#1976FF,0_12px_40px_rgba(25,118,255,0.12)]'
+                  : 'border-navy-deep/10 bg-white'
                   }`}
               >
                 {plan.tag && (
@@ -219,8 +234,8 @@ export function QuotePlansPanel({
                   type="button"
                   onClick={() => onSelectPlan(plan.id)}
                   className={`mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[14px] font-semibold transition-all ${plan.id === 'value'
-                      ? 'bg-navy-deep text-white hover:bg-navy'
-                      : 'border border-navy-deep/10 bg-white text-navy-deep hover:border-electric/30 hover:bg-electric/5'
+                    ? 'bg-navy-deep text-white hover:bg-navy'
+                    : 'border border-navy-deep/10 bg-white text-navy-deep hover:border-electric/30 hover:bg-electric/5'
                     }`}
                 >
                   Choose {plan.name}

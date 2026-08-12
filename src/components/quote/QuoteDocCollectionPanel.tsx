@@ -8,6 +8,7 @@ type QuoteDocCollectionPanelProps = {
   onFileSelect: (name: string | null) => void
   onBack: () => void
   onContinue: () => void
+  onRestart?: () => void
 }
 
 export function QuoteDocCollectionPanel({
@@ -15,6 +16,7 @@ export function QuoteDocCollectionPanel({
   onFileSelect,
   onBack,
   onContinue,
+  onRestart,
 }: QuoteDocCollectionPanelProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -29,6 +31,7 @@ export function QuoteDocCollectionPanel({
       subtitle="Required for Canadian business verification before policy issuance."
       stepLabel="Documents"
       onBack={onBack}
+      onRestart={onRestart}
     >
       <div className="rounded-[20px] bg-white p-5 sm:p-6">
         <div className="flex items-start gap-3 rounded-xl border border-[#1976FF]/20 bg-[#1976FF]/5 px-4 py-3">

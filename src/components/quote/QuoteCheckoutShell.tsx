@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
-import { ArrowLeft, X } from 'lucide-react'
+import { ArrowLeft, X, RotateCcw } from 'lucide-react'
 
 type QuoteCheckoutShellProps = {
   title: string
   subtitle?: string
   stepLabel: string
   onBack?: () => void
+  onRestart?: () => void
   children: React.ReactNode
 }
 
@@ -14,6 +15,7 @@ export function QuoteCheckoutShell({
   subtitle,
   stepLabel,
   onBack,
+  onRestart,
   children,
 }: QuoteCheckoutShellProps) {
   return (
@@ -36,13 +38,26 @@ export function QuoteCheckoutShell({
           )}
         </div>
         <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/40">{stepLabel}</span>
-        <Link
-          to="/"
-          className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
-          aria-label="Exit"
-        >
-          <X className="size-4" />
-        </Link>
+        <div className="flex items-center gap-2">
+          {onRestart && (
+            <button
+              type="button"
+              onClick={onRestart}
+              className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
+              aria-label="Restart quote"
+              title="Restart quote"
+            >
+              <RotateCcw className="size-4" />
+            </button>
+          )}
+          <Link
+            to="/"
+            className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
+            aria-label="Exit"
+          >
+            <X className="size-4" />
+          </Link>
+        </div>
       </nav>
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-4 lg:p-5">
