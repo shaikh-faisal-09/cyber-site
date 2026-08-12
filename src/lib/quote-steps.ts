@@ -7,13 +7,13 @@ const YES_NO_LABELS: Record<string, string> = {
 }
 
 const REVENUE_LABELS: Record<number, string> = {
-  500_000: '$500K',
-  1_000_000: '$1M',
-  2_500_000: '$2.5M',
-  5_000_000: '$5M',
-  10_000_000: '$10M',
-  25_000_000: '$25M',
-  50_000_000: '$50M+',
+  500_000: 'CA$500K',
+  1_000_000: 'CA$1M',
+  2_500_000: 'CA$2.5M',
+  5_000_000: 'CA$5M',
+  10_000_000: 'CA$10M',
+  25_000_000: 'CA$25M',
+  50_000_000: 'CA$50M+',
 }
 
 const EMPLOYEE_LABELS: Record<number, string> = {
@@ -65,7 +65,7 @@ export function getAnswerSummary(id: string, answers: Answers): string | null {
       return answers.industry ?? null
     case 'revenue':
       return answers.revenue != null
-        ? REVENUE_LABELS[answers.revenue] ?? `$${answers.revenue.toLocaleString()}`
+        ? REVENUE_LABELS[answers.revenue] ?? `CA$${answers.revenue.toLocaleString()}`
         : null
     case 'employees':
       return answers.employees != null

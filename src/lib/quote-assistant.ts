@@ -86,7 +86,7 @@ const FAQ_RESPONSES: { match: RegExp; reply: string }[] = [
   { match: /score|grade|rating/i, reply: 'Your cyber score (0–100) updates live as you answer. Training, MFA, backups and patching have the biggest impact.' },
   { match: /mfa|two.?factor|2fa|authenticator/i, reply: 'MFA means logging in with a password plus a code from your phone or authenticator app. It blocks over 99% of automated attacks.' },
   { match: /not sure|don't know|unsure|help me choose/i, reply: 'Select "Not sure" on any question — we\'ll use conservative underwriting defaults. You can also ask me about the specific question you\'re on.' },
-  { match: /country|uae|gcc|international|cover/i, reply: 'We cover businesses across the UAE, GCC and select international markets. More geographies are being added regularly.' },
+  { match: /country|canada|international|cover/i, reply: 'We cover businesses across Canada and select international markets. More geographies are being added regularly.' },
   { match: /lower|reduce|discount|improve/i, reply: 'Complete security upgrades after purchase — MFA, backups, training — to unlock instant premium discounts on renewal.' },
   { match: /plan|basic|value|premium|coverage/i, reply: "After this check you'll compare Basic, Value and Premium plans with adjustable policy limits. Value is our most popular tier." },
   { match: /ransomware|breach|attack|incident/i, reply: 'Every Sentrix policy includes 24/7 incident response, forensics, legal support and ransomware negotiation.' },

@@ -56,7 +56,7 @@ export function QuotePolicyPanel({
     year: 'numeric',
   })
 
-  const fmtLimit = (n: number) => (n >= 1_000_000 ? `$${n / 1_000_000}M` : `$${n / 1_000}K`)
+  const fmtLimit = (n: number) => (n >= 1_000_000 ? `CA$${n / 1_000_000}M` : `CA$${n / 1_000}K`)
 
   return (
     <QuoteCheckoutShell
@@ -83,7 +83,7 @@ export function QuotePolicyPanel({
           </div>
           <div className="rounded-xl bg-[#f8f9fb] px-4 py-3">
             <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-ink-muted">Annual premium</p>
-            <p className="mt-1 text-[15px] font-semibold tabular-nums text-navy-deep">${fmtNumber(annualPremium)}</p>
+            <p className="mt-1 text-[15px] font-semibold tabular-nums text-navy-deep">CA${fmtNumber(annualPremium)}</p>
           </div>
           <div className="rounded-xl bg-[#f8f9fb] px-4 py-3">
             <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-ink-muted">Policy limit</p>
@@ -91,7 +91,7 @@ export function QuotePolicyPanel({
           </div>
           <div className="rounded-xl bg-[#f8f9fb] px-4 py-3">
             <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-ink-muted">Deductible</p>
-            <p className="mt-1 text-[15px] font-semibold tabular-nums text-navy-deep">${fmtNumber(deductible)}</p>
+            <p className="mt-1 text-[15px] font-semibold tabular-nums text-navy-deep">CA${fmtNumber(deductible)}</p>
           </div>
           <div className="rounded-xl bg-[#f8f9fb] px-4 py-3">
             <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-ink-muted">Effective date</p>
@@ -128,7 +128,7 @@ export function QuotePolicyPanel({
         {tradeLicenseName && (
           <div className="mt-5 flex items-center gap-2 rounded-xl bg-[#f8f9fb] px-4 py-3 text-[13px] text-navy-deep">
             <ShieldCheck className="size-4 shrink-0 text-[#1976FF]" />
-            Trade license verified: {tradeLicenseName}
+            Business registration verified: {tradeLicenseName}
           </div>
         )}
 

@@ -53,47 +53,47 @@ const revealSpring = { type: "spring" as const, stiffness: 110, damping: 16, mas
 
 const stats = [
   {
-    label: "Cyberattacks blocked daily (UAE)",
-    value: "90K–200K",
+    label: "Cyberattacks blocked daily (Canada)",
+    value: "150K–300K",
     unit: "/ day",
-    detail: "Over 70% linked to state-sponsored actors",
+    detail: "Over 60% linked to ransomware and phishing",
     icon: ShieldAlert,
     accent: "#00C2FF",
     bg: "rgba(0,194,255,0.12)",
   },
   {
     label: "Peak daily attack volume",
-    value: "700K",
+    value: "1.2M",
     unit: "/ day",
-    detail: "Q1 2026 regional tension peak",
+    detail: "Q4 2025 holiday season peak",
     icon: TrendingUp,
     accent: "#f87171",
     bg: "rgba(248,113,113,0.12)",
     highlight: true,
   },
   {
-    label: "Confirmed UAE threat incidents",
-    value: "128",
+    label: "Confirmed Canadian threat incidents",
+    value: "284",
     unit: "",
-    detail: "By 18 Feb 2026 · ransomware, gov breaches & data leaks",
+    detail: "2025 · ransomware, data breaches & supply chain attacks",
     icon: AlertTriangle,
     accent: "#fbbf24",
     bg: "rgba(251,191,36,0.12)",
   },
   {
-    label: "Middle East average breach cost",
-    value: "AED 26.4M",
+    label: "Canada average breach cost",
+    value: "CA$ 8.9M",
     unit: "",
-    detail: "Down ~18% from AED 32.1M · IBM Cost of a Data Breach 2025",
+    detail: "IBM Cost of a Data Breach 2025 · 12% above global average",
     icon: DollarSign,
     accent: "#a78bfa",
     bg: "rgba(167,139,250,0.12)",
   },
   {
-    label: "UAE cyber insurance market",
-    value: "AED 307.5M",
+    label: "Canadian cyber insurance market",
+    value: "CA$ 1.2B",
     unit: "",
-    detail: "2025 · projected AED 1.29B by 2034 (17.23% CAGR)",
+    detail: "2025 · projected CA$ 3.8B by 2034 (12.5% CAGR)",
     icon: BarChart3,
     accent: "#c8f060",
     bg: "rgba(200,240,96,0.14)",
@@ -366,7 +366,7 @@ const faqs = [
   },
   {
     q: "Which countries do you cover?",
-    a: "We cover businesses across the UAE, GCC and select international markets. More geographies are being added.",
+    a: "We cover businesses across Canada and select international markets. More geographies are being added.",
   },
   {
     q: "Is my data secure?",
@@ -501,7 +501,7 @@ export default function LandingPage() {
                           <rect x="6" y="10.667" width="18" height="5.333" fill="#000000" />
                         </svg>
                       </span>
-                      UAE&apos;s first Cyber Insurance for SMEs.
+                      Canada&apos;s modern Cyber Insurance for SMEs.
                     </p>
                     <p className="flex items-center justify-center gap-2 lg:justify-start">
                       <span className="size-1.5 shrink-0 rounded-full bg-electric" aria-hidden />
@@ -586,8 +586,8 @@ export default function LandingPage() {
               </p>
               <h2 className="display-lg mt-4 text-white">Why SMEs need cover now</h2>
               <p className="mt-4 text-base text-white/55">
-                UAE networks block up to{" "}
-                <span className="font-semibold text-accent">200,000 attacks daily</span> — yet most
+                Canadian networks block up to{" "}
+                <span className="font-semibold text-accent">300,000 attacks daily</span> — yet most
                 SMEs remain uninsured against breach and ransomware costs.
               </p>
             </div>
@@ -599,11 +599,10 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ ...revealSpring, delay: i * 0.06 }}
-                  className={`group relative z-10 overflow-hidden rounded-2xl border p-5 transition-transform hover:-translate-y-1 sm:p-6 ${
-                    stat.highlight
-                      ? "border-accent/40 bg-gradient-to-br from-accent/20 via-white/10 to-electric/10 shadow-[0_0_40px_rgba(200,240,96,0.15)]"
-                      : "border-white/10 bg-[#102950]/95 hover:border-white/20 hover:bg-[#102950]"
-                  }`}
+                  className={`group relative z-10 overflow-hidden rounded-2xl border p-5 transition-transform hover:-translate-y-1 sm:p-6 ${stat.highlight
+                    ? "border-accent/40 bg-gradient-to-br from-accent/20 via-white/10 to-electric/10 shadow-[0_0_40px_rgba(200,240,96,0.15)]"
+                    : "border-white/10 bg-[#102950]/95 hover:border-white/20 hover:bg-[#102950]"
+                    }`}
                 >
                   <div
                     className="mb-4 flex size-10 items-center justify-center rounded-xl"

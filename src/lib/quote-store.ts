@@ -18,9 +18,12 @@ export type Answers = {
   emailSecurity?: string
   endpointProtection?: string
   incidentResponse?: string
+  province?: string
+  pipedaCompliance?: string
+  quebecDataHandling?: string
 }
 
-export const QUESTION_COUNT = 15
+export const QUESTION_COUNT = 18
 export const STEP_LOADING = QUESTION_COUNT
 export const STEP_PLANS = QUESTION_COUNT + 1
 export const STEP_PAYMENT = QUESTION_COUNT + 2
@@ -37,6 +40,8 @@ const SECURITY_WEIGHTS: Record<string, number> = {
   emailSecurity: 10,
   endpointProtection: 14,
   incidentResponse: 12,
+  pipedaCompliance: 10,
+  quebecDataHandling: 8,
 }
 
 const GOOD_NO = new Set(['endpointControls'])
@@ -172,7 +177,7 @@ function hasRemoteWork(operates?: string): boolean {
 }
 
 export function estimatePremium(answers: Answers, score: number): number {
-  const base = 3000
+  const base = 4200
   let multiplier = 1
 
   if (answers.revenue != null) {
@@ -300,16 +305,33 @@ export const INDUSTRIES = [
   'Other',
 ] as const
 
+export const PROVINCES = [
+  'Ontario',
+  'Quebec',
+  'British Columbia',
+  'Alberta',
+  'Manitoba',
+  'Saskatchewan',
+  'Nova Scotia',
+  'New Brunswick',
+  'Newfoundland and Labrador',
+  'Prince Edward Island',
+  'Northwest Territories',
+  'Yukon',
+  'Nunavut',
+] as const
+
 export const COUNTRIES = [
-  'United Arab Emirates',
-  'Saudi Arabia',
-  'United Kingdom',
+  'Canada',
   'United States',
+  'United Kingdom',
   'Germany',
   'France',
+  'Australia',
   'Singapore',
   'India',
-  'Australia',
+  'United Arab Emirates',
+  'Saudi Arabia',
   'Other',
 ] as const
 

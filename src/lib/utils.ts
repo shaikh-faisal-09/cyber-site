@@ -6,9 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function fmtCurrency(n: number): string {
-  if (n >= 1_000_000) return `AED ${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`
-  if (n >= 1_000) return `AED ${Math.round(n / 1_000)}K`
-  return `AED ${n.toLocaleString()}`
+  if (n >= 1_000_000) return `CA$ ${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`
+  if (n >= 1_000) return `CA$ ${Math.round(n / 1_000)}K`
+  return `CA$ ${n.toLocaleString()}`
 }
 
 export function fmtNumber(n: number): string {

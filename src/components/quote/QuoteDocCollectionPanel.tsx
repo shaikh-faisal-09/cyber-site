@@ -25,8 +25,8 @@ export function QuoteDocCollectionPanel({
 
   return (
     <QuoteCheckoutShell
-      title="Upload your trade license"
-      subtitle="Required for UAE business verification before policy issuance."
+      title="Upload your business registration"
+      subtitle="Required for Canadian business verification before policy issuance."
       stepLabel="Documents"
       onBack={onBack}
     >
@@ -34,9 +34,9 @@ export function QuoteDocCollectionPanel({
         <div className="flex items-start gap-3 rounded-xl border border-[#1976FF]/20 bg-[#1976FF]/5 px-4 py-3">
           <FileText className="mt-0.5 size-4 shrink-0 text-[#1976FF]" />
           <div>
-            <p className="text-[13px] font-medium text-navy-deep">Trade license</p>
+            <p className="text-[13px] font-medium text-navy-deep">Business registration</p>
             <p className="mt-0.5 text-[12px] text-ink-muted">
-              Upload a clear PDF or image of your valid UAE trade license.
+              Upload a clear PDF or image of your valid Canadian business registration.
             </p>
           </div>
         </div>

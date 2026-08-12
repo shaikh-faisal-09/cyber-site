@@ -15,6 +15,8 @@ import {
   Mail,
   Radar,
   AlertTriangle,
+  FileCheck,
+  Globe,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { SEO } from '@/components/site/SEO'
@@ -39,6 +41,7 @@ import {
   INDUSTRIES,
   OPERATES,
   DATA_TYPES,
+  PROVINCES,
   STEP_LOADING,
   STEP_PLANS,
   STEP_PAYMENT,
@@ -126,6 +129,26 @@ const QUESTION_STEPS: StepDef[] = [
     icon: Radar,
     title: 'Do you have a documented incident response plan reviewed every year?',
   },
+  {
+    id: 'province',
+    icon: Globe,
+    title: 'Which Canadian province or territory is your business registered in?',
+    subtitle: 'Different provinces have varying privacy and data protection requirements.',
+  },
+  {
+    id: 'pipedacompliance',
+    icon: FileCheck,
+    title: 'Are you compliant with PIPEDA (Canadian privacy law)?',
+    subtitle: 'Personal Information Protection and Electronic Documents Act.',
+    tip: 'PIPEDA compliance reduces regulatory risk and potential penalties.',
+  },
+  {
+    id: 'quebecdatahandling',
+    icon: FileCheck,
+    title: 'Do you handle data from Quebec residents?',
+    subtitle: 'Quebec has stricter privacy requirements under Bill 64 (Law 25).',
+    tip: 'Quebec data handling requires additional consent and transparency measures.',
+  },
 ]
 
 const LOADING_CHECKS = [
@@ -142,12 +165,12 @@ const REVENUE_SLIDER_MAX = 50_000_000
 const REVENUE_SLIDER_STEP = 100_000
 const REVENUE_DEFAULT = 100_000
 
-function formatAed(amount: number) {
-  return `AED ${formatRevenueNumber(amount)}`
+function formatCad(amount: number) {
+  return `CA$ ${formatRevenueNumber(amount)}`
 }
 
 function formatRevenueNumber(amount: number) {
-  return new Intl.NumberFormat('en-AE', { maximumFractionDigits: 0 }).format(amount)
+  return new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 }).format(amount)
 }
 
 const INDUSTRY_IMAGES: Record<(typeof INDUSTRIES)[number], string> = {
@@ -279,11 +302,10 @@ export default function QuotePage() {
                   key={ind}
                   type="button"
                   whileTap={{ scale: 0.98 }}
-                  className={`group relative flex min-h-[158px] flex-col justify-between overflow-hidden rounded-2xl p-4 text-left transition sm:min-h-[170px] sm:p-5 ${
-                    selected
-                      ? 'ring-2 ring-electric ring-offset-2 ring-offset-white'
-                      : 'hover:-translate-y-1 hover:shadow-lg'
-                  }`}
+                  className={`group relative flex min-h-[158px] flex-col justify-between overflow-hidden rounded-2xl p-4 text-left transition sm:min-h-[170px] sm:p-5 ${selected
+                    ? 'ring-2 ring-electric ring-offset-2 ring-offset-white'
+                    : 'hover:-translate-y-1 hover:shadow-lg'
+                    }`}
                   onClick={() => {
                     setAnswer('industry', ind)
                     maybeAdvance()
@@ -324,7 +346,7 @@ export default function QuotePage() {
                 <p className="mt-1 text-xs text-navy/45">Drag the slider or enter an exact amount below.</p>
               </div>
               <output className="font-display text-2xl font-semibold text-navy sm:text-3xl">
-                {formatAed(revenue ?? sliderRevenue)}
+                {formatCad(revenue ?? sliderRevenue)}
               </output>
             </div>
 
@@ -338,14 +360,14 @@ export default function QuotePage() {
                   setAnswer('revenue', value)
                   setRevenueInput(formatRevenueNumber(value))
                 }}
-                aria-label="Annual revenue in AED"
+                aria-label="Annual revenue in CAD"
               />
             </div>
 
             <label className="block">
               <span className="text-sm font-medium text-navy">Or enter your annual revenue</span>
               <span className="mt-2 flex items-center overflow-hidden rounded-xl border border-navy/15 bg-[#f8fafc] transition focus-within:border-electric focus-within:ring-2 focus-within:ring-electric/15">
-                <span className="border-r border-navy/10 px-4 py-3 text-sm font-semibold text-navy/65">AED</span>
+                <span className="border-r border-navy/10 px-4 py-3 text-sm font-semibold text-navy/65">CA$</span>
                 <input
                   type="text"
                   inputMode="numeric"
@@ -362,7 +384,7 @@ export default function QuotePage() {
                 />
               </span>
               <span id="revenue-input-help" className="mt-2 block text-xs text-navy/45">
-                Enter numbers only. Amounts above AED 50,000,000 are accepted.
+                Enter numbers only. Amounts above CA$ 50,000,000 are accepted.
               </span>
             </label>
 
@@ -481,6 +503,31 @@ export default function QuotePage() {
       case 'incidentResponse':
         return renderYesNoStep('incidentResponse', { includeUnsure: false })
 
+      case 'province':
+        return (
+          <AnswerGrid cols={1}>
+            {PROVINCES.map((p) => (
+              <ChoiceButton
+                key={p}
+                label={p}
+                icon={MapPin}
+                iconBg="#1976FF"
+                selected={answers.province === p}
+                onClick={() => {
+                  setAnswer('province', p)
+                  maybeAdvance()
+                }}
+              />
+            ))}
+          </AnswerGrid>
+        )
+
+      case 'pipedacompliance':
+        return renderYesNoStep('pipedacompliance', { showTipOn: 'no' })
+
+      case 'quebecdatahandling':
+        return renderYesNoStep('quebecdatahandling', { showTipOn: 'yes' })
+
       default:
         return null
     }
@@ -507,7 +554,7 @@ export default function QuotePage() {
   if (isDocs) {
     return (
       <>
-        <SEO title="Upload documents — Sentrix" description="Upload your trade license to complete your policy." noindex />
+        <SEO title="Upload documents — Sentrix" description="Upload your business registration to complete your policy." noindex />
         <QuoteDocCollectionPanel
           fileName={tradeLicenseName}
           onFileSelect={setTradeLicense}

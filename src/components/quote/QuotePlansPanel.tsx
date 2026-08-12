@@ -10,8 +10,8 @@ import { getAcceptedPremiumDiscount, getApplicablePremiumTips } from '@/lib/prem
 import { fmtNumber } from '@/lib/utils'
 
 function fmtLimit(n: number): string {
-  if (n >= 1_000_000) return `$${n / 1_000_000}M`
-  return `$${n / 1_000}K`
+  if (n >= 1_000_000) return `CA$${n / 1_000_000}M`
+  return `CA$${n / 1_000}K`
 }
 
 type QuotePlansPanelProps = {
@@ -120,7 +120,7 @@ export function QuotePlansPanel({
                 <ScoreGauge score={score} size="sm" inverted showLabel={false} />
                 <div className="text-right leading-tight">
                   <p className="text-lg font-bold tabular-nums text-white sm:text-xl">
-                    ${fmtNumber(basicAnnual)}
+                    CA${fmtNumber(basicAnnual)}
                   </p>
                   <p className="text-[10px] font-medium text-white/50">Basic plan /yr</p>
                 </div>
@@ -134,7 +134,7 @@ export function QuotePlansPanel({
               <div>
                 <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-white/40">Policy limit</p>
                 <p className="mt-1 font-display text-3xl font-light tabular-nums text-white sm:text-4xl">
-                  ${fmtNumber(limit)}
+                  CA${fmtNumber(limit)}
                 </p>
               </div>
               <p className="text-[13px] text-white/45">Cyber score {score}/100</p>
@@ -162,11 +162,10 @@ export function QuotePlansPanel({
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
-                className={`relative flex flex-col rounded-[20px] border p-5 sm:p-6 ${
-                  plan.id === 'value'
+                className={`relative flex flex-col rounded-[20px] border p-5 sm:p-6 ${plan.id === 'value'
                     ? 'border-[#1976FF]/50 bg-white shadow-[0_0_0_1px_#1976FF,0_12px_40px_rgba(25,118,255,0.12)]'
                     : 'border-navy-deep/10 bg-white'
-                }`}
+                  }`}
               >
                 {plan.tag && (
                   <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-[#1976FF]/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#1976FF]">
@@ -176,7 +175,7 @@ export function QuotePlansPanel({
                 )}
                 <h2 className="font-display text-xl font-normal text-navy-deep">{plan.name}</h2>
                 <p className="mt-3 font-display text-3xl font-light tabular-nums text-navy-deep">
-                  ${fmtNumber(plan.annual)}
+                  CA${fmtNumber(plan.annual)}
                   <span className="text-sm text-ink-muted">/yr</span>
                 </p>
                 <div className="mt-3">
@@ -194,7 +193,7 @@ export function QuotePlansPanel({
                   >
                     {PLAN_DEDUCTIBLE_OPTIONS[plan.id].map((amount) => (
                       <option key={amount} value={amount}>
-                        ${fmtNumber(amount)}
+                        CA${fmtNumber(amount)}
                         {amount === plan.deductible
                           ? ' · standard'
                           : amount > plan.deductible
@@ -219,11 +218,10 @@ export function QuotePlansPanel({
                 <button
                   type="button"
                   onClick={() => onSelectPlan(plan.id)}
-                  className={`mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[14px] font-semibold transition-all ${
-                    plan.id === 'value'
+                  className={`mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[14px] font-semibold transition-all ${plan.id === 'value'
                       ? 'bg-navy-deep text-white hover:bg-navy'
                       : 'border border-navy-deep/10 bg-white text-navy-deep hover:border-electric/30 hover:bg-electric/5'
-                  }`}
+                    }`}
                 >
                   Choose {plan.name}
                   <ArrowRight className="size-4" />
