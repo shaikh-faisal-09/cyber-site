@@ -207,9 +207,11 @@ export function estimatePremium(answers: Answers, score: number): number {
 }
 
 export const PLAN_DEDUCTIBLE_OPTIONS: Record<PlanId, readonly number[]> = {
-  basic: [2_500, 5_000, 10_000, 25_000],
+  // basic: [2_500, 5_000, 10_000, 25_000],
+  basic: [1_000, 2_500, 5_000, 10_000],
   value: [1_000, 2_500, 5_000, 10_000],
-  premium: [500, 1_000, 2_500, 5_000],
+  premium: [1_000, 2_500, 5_000, 10_000],
+  // premium: [500, 1_000, 2_500, 5_000],
 }
 
 export const DEFAULT_PLAN_DEDUCTIBLES: Record<PlanId, number> = {
@@ -361,7 +363,8 @@ export const DATA_TYPES = [
   'None',
 ] as const
 
-export const LIMITS = [250_000, 500_000, 1_000_000, 2_000_000, 5_000_000] as const
+// export const LIMITS = [250_000, 500_000, 1_000_000, 2_000_000, 5_000_000] as const
+export const LIMITS = [50_000, 100_000, 250_000, 500_000, 1_000_000] as const
 
 /** Higher deductible → factor below 1 (lower premium); lower deductible → factor above 1 */
 export function deductiblePremiumFactor(selected: number, planDefault: number): number {
