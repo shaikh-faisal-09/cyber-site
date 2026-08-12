@@ -523,10 +523,10 @@ export default function QuotePage() {
         )
 
       case 'pipedacompliance':
-        return renderYesNoStep('pipedacompliance', { showTipOn: 'no' })
+        return renderYesNoStep('pipedacompliance' as keyof typeof answers, { showTipOn: 'no' })
 
       case 'quebecdatahandling':
-        return renderYesNoStep('quebecdatahandling', { showTipOn: 'yes' })
+        return renderYesNoStep('quebecdatahandling' as keyof typeof answers, { showTipOn: 'yes' })
 
       default:
         return null
