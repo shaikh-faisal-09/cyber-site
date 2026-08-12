@@ -45,8 +45,8 @@ const SECURITY_WEIGHTS: Record<string, number> = {
 }
 
 const GOOD_NO = new Set(['endpointControls'])
-const SCORE_GAIN = 5
-const SCORE_PENALTY = 2
+const SCORE_GAIN = 8
+const SCORE_PENALTY = 3
 const LOWER_RISK_POSTURE = 0.65
 
 function valueScore(key: string, answer?: string): number {
