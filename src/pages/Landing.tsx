@@ -496,9 +496,9 @@ export default function LandingPage() {
                           aria-hidden
                         >
                           <rect width="6" height="16" fill="#FF0000" />
-                          <rect x="6" width="18" height="5.333" fill="#00732F" />
-                          <rect x="6" y="5.333" width="18" height="5.334" fill="#FFFFFF" />
-                          <rect x="6" y="10.667" width="18" height="5.333" fill="#000000" />
+                          <rect x="6" width="12" height="16" fill="#FFFFFF" />
+                          <rect x="18" width="6" height="16" fill="#FF0000" />
+                          <path d="M12 3.5 L13.5 6.5 L16.5 6.5 L14 8.5 L15 11.5 L12 9.5 L9 11.5 L10 8.5 L7.5 6.5 L10.5 6.5 Z" fill="#FF0000" />
                         </svg>
                       </span>
                       Canada&apos;s modern Cyber Insurance for SMEs.
