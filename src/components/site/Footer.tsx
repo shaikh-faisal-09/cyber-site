@@ -76,6 +76,11 @@ export function Footer() {
             ))}
           </div>
         </div>
+
+        <div className="mt-8 flex items-center justify-center gap-3 border-t border-border pt-6">
+          <span className="text-sm text-muted-foreground">Powered by Salus Insurance Services</span>
+          <img src="/logos/slaus-insurance-logo.webp" alt="Salus Insurance Services" className="h-8 w-auto" />
+        </div>
       </Container>
     </footer>
   )
