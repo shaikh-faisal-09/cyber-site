@@ -103,7 +103,7 @@ export function QuoteWizard({
             <div
               className="group/score relative flex flex-col items-center gap-1.5 outline-none sm:items-end"
               tabIndex={0}
-              aria-label={`Cyber risk score ${score} out of 100`}
+              aria-label={`Cyber risk score ${score} out of 100}`}
             >
               <ScoreGauge score={score} size="sm" inverted showLabel={false} />
               <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-white/45">Risk score</p>
@@ -162,6 +162,12 @@ export function QuoteWizard({
           >
             <div className="mx-auto w-full max-w-5xl">{children}</div>
           </div>
+        </div>
+      </div>
+      <div className="shrink-0 border-t border-gold/20 bg-transparent px-4 py-2">
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-xs text-white/70">Powered by Salus Insurance Services</span>
+          <img src="/logos/slaus-insurance-logo.webp" alt="Salus Insurance Services" className="h-8 w-auto" />
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { SEO } from '@/components/site/SEO'
 import { QuotePlansPanel } from '@/components/quote/QuotePlansPanel'
 import { useQuote, calcScore, estimatePremium } from '@/lib/quote-store'
+import { Footer } from '@/components/site/Footer'
 
 export default function PlansPage() {
   const { answers, policyLimitIndex, planDeductibles, acceptedImprovements, setPolicyLimitIndex, setPlanDeductible, toggleAcceptedImprovement } =
@@ -25,8 +26,9 @@ export default function PlansPage() {
         onLimitChange={setPolicyLimitIndex}
         onDeductibleChange={setPlanDeductible}
         onToggleImprovement={toggleAcceptedImprovement}
-        onSelectPlan={() => {}}
+        onSelectPlan={() => { }}
       />
+      <Footer />
     </>
   )
 }

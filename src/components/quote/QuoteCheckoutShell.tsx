@@ -70,6 +70,12 @@ export function QuoteCheckoutShell({
           {children}
         </div>
       </div>
+      <div className="shrink-0 border-t border-gold/20 bg-transparent px-4 py-2">
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-xs text-white/70">Powered by Salus Insurance Services</span>
+          <img src="/logos/slaus-insurance-logo.webp" alt="Salus Insurance Services" className="h-8 w-auto" />
+        </div>
+      </div>
     </div>
   )
 }
