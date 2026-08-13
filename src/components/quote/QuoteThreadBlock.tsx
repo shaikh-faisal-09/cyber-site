@@ -79,7 +79,21 @@ export function QuoteThreadBlock({
                     {toggle}
                   </div>
                   {subtitle && (
-                    <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">{subtitle}</p>
+                    <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
+                      {stepId === 'cloudServices' ? (
+                        <>
+                          e.g.{' '}
+                          <img src="/logos/microsoft.svg" alt="Microsoft" className="inline-block h-4 w-auto align-middle mx-1" />
+                          Microsoft 365,{' '}
+                          <img src="/logos/google.svg" alt="Google" className="inline-block h-4 w-auto align-middle mx-1" />
+                          Google Workspace,{' '}
+                          <img src="/logos/aws.svg" alt="AWS" className="inline-block h-4 w-auto align-middle mx-1" />
+                          AWS
+                        </>
+                      ) : (
+                        subtitle
+                      )}
+                    </p>
                   )}
                   {panel && <div className="mt-4">{panel}</div>}
                 </>
@@ -96,7 +110,21 @@ export function QuoteThreadBlock({
                 {title}
               </h2>
               {active && subtitle && (
-                <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">{subtitle}</p>
+                <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
+                  {stepId === 'cloudServices' ? (
+                    <>
+                      e.g.{' '}
+                      <img src="/logos/microsoft.svg" alt="Microsoft" className="inline-block h-4 w-auto align-middle mx-1" />
+                      Microsoft 365,{' '}
+                      <img src="/logos/google.svg" alt="Google" className="inline-block h-4 w-auto align-middle mx-1" />
+                      Google Workspace,{' '}
+                      <img src="/logos/aws.svg" alt="AWS" className="inline-block h-4 w-auto align-middle mx-1" />
+                      AWS
+                    </>
+                  ) : (
+                    subtitle
+                  )}
+                </p>
               )}
             </>
           )}

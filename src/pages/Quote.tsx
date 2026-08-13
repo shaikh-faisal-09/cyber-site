@@ -65,6 +65,7 @@ type StepDef = {
   title: string
   subtitle?: string
   tip?: string
+  [key: string]: unknown
 }
 
 const QUESTION_STEPS: StepDef[] = [
@@ -161,7 +162,7 @@ const LOADING_CHECKS = [
 const REVENUE_STEP_INDEX = QUESTION_STEPS.findIndex((step) => step.id === 'revenue')
 
 const REVENUE_SLIDER_MIN = 0
-const REVENUE_SLIDER_MAX = 50_000_000
+const REVENUE_SLIDER_MAX = 20_000_000
 const REVENUE_SLIDER_STEP = 100_000
 const REVENUE_DEFAULT = 100_000
 
@@ -339,6 +340,7 @@ export default function QuotePage() {
           REVENUE_SLIDER_MAX,
           Math.max(REVENUE_SLIDER_MIN, revenue ?? REVENUE_DEFAULT),
         )
+        const isAboveLimit = revenue && revenue > REVENUE_SLIDER_MAX
         return (
           <div className="rounded-3xl border border-navy/10 bg-white p-5 shadow-[0_12px_40px_rgba(6,26,64,0.08)] sm:p-7">
             <div className="flex flex-col gap-1 border-b border-navy/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
@@ -385,12 +387,18 @@ export default function QuotePage() {
                 />
               </span>
               <span id="revenue-input-help" className="mt-2 block text-xs text-navy/45">
-                Enter numbers only. Amounts above CA$ 50,000,000 are accepted.
+                Enter numbers only. Maximum CA$ 20,000,000.
               </span>
             </label>
 
+            {isAboveLimit && (
+              <div className="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-4">
+                <p className="text-sm font-medium text-amber-800">For annual revenue above CA$ 20,000,000, you can approach us via email for a custom quote.</p>
+              </div>
+            )}
+
             <div className="mt-6">
-              <ContinueButton onClick={next} disabled={!revenue || revenue <= 0} />
+              <ContinueButton onClick={next} disabled={revenue === undefined || revenue === null || revenue <= 0 || !!isAboveLimit} />
             </div>
           </div>
         )
@@ -398,11 +406,11 @@ export default function QuotePage() {
       case 'employees':
         return (
           <AnswerGrid cols={3}>
-            {EMPLOYEE_CHIPS.map(({ value, label, bg }) => (
+            {EMPLOYEE_CHIPS.map(({ value, label, bg, icon }) => (
               <OptionChip
                 key={value}
                 label={label}
-                icon={Users}
+                icon={icon}
                 iconBg={bg}
                 selected={answers.employees === value}
                 onClick={() => {
