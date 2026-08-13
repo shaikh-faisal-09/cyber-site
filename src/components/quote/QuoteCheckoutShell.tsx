@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowLeft, X, RotateCcw } from 'lucide-react'
+import { ArrowLeft, X, RotateCcw, Home } from 'lucide-react'
 
 type QuoteCheckoutShellProps = {
   title: string
@@ -18,6 +18,9 @@ export function QuoteCheckoutShell({
   onRestart,
   children,
 }: QuoteCheckoutShellProps) {
+  const isProduction = !import.meta.env.DEV
+  const homeUrl = isProduction ? 'https://salus-insurance-services.vercel.app/' : '/'
+
   return (
     <div className="quote-shell flex h-[100dvh] flex-col overflow-hidden">
       <nav className="flex h-12 shrink-0 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -32,9 +35,9 @@ export function QuoteCheckoutShell({
               <ArrowLeft className="size-4" />
             </button>
           ) : (
-            <Link to="/" className="text-[15px] font-semibold text-white">
+            <a href={homeUrl} target={isProduction ? '_blank' : undefined} rel={isProduction ? 'noopener noreferrer' : undefined} className="text-[15px] font-semibold text-white">
               Sentrix
-            </Link>
+            </a>
           )}
         </div>
         <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/40">{stepLabel}</span>
@@ -50,6 +53,16 @@ export function QuoteCheckoutShell({
               <RotateCcw className="size-4" />
             </button>
           )}
+          <a
+            href={homeUrl}
+            target={isProduction ? '_blank' : undefined}
+            rel={isProduction ? 'noopener noreferrer' : undefined}
+            className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
+            aria-label="Home"
+            title="Home"
+          >
+            <Home className="size-4" />
+          </a>
           <Link
             to="/"
             className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"

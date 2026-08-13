@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, X, RotateCcw } from 'lucide-react'
+import { ArrowLeft, X, RotateCcw, Home } from 'lucide-react'
 import { motion } from 'motion/react'
 import { ScoreGauge } from './ScoreGauge'
 import { ScoreInsight, ScoreIntroHint, ScoreBenchmark } from './ScoreInsight'
@@ -31,6 +31,8 @@ export function QuoteWizard({
   children,
 }: QuoteWizardProps) {
   const threadRef = useRef<HTMLDivElement>(null)
+  const isProduction = !import.meta.env.DEV
+  const homeUrl = isProduction ? 'https://salus-insurance-services.vercel.app/' : '/'
 
   const scrollActiveQuestionIntoView = useCallback(() => {
     const container = threadRef.current
@@ -67,12 +69,14 @@ export function QuoteWizard({
                 <ArrowLeft className="size-4" />
               </button>
             ) : (
-              <Link
-                to="/"
+              <a
+                href={homeUrl}
+                target={isProduction ? '_blank' : undefined}
+                rel={isProduction ? 'noopener noreferrer' : undefined}
                 className="shrink-0 text-[14px] font-semibold text-white/90 transition hover:text-white sm:text-[15px]"
               >
                 Sentrix
-              </Link>
+              </a>
             )}
             <div className="min-w-0">
               <h1 className="truncate text-[17px] font-semibold tracking-tight text-white sm:text-[19px]">
@@ -125,6 +129,16 @@ export function QuoteWizard({
                 <RotateCcw className="size-4" />
               </button>
             )}
+            <a
+              href={homeUrl}
+              target={isProduction ? '_blank' : undefined}
+              rel={isProduction ? 'noopener noreferrer' : undefined}
+              className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"
+              aria-label="Home"
+              title="Home"
+            >
+              <Home className="size-4" />
+            </a>
             <Link
               to="/"
               className="flex size-8 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-md hover:bg-white/15 hover:text-white"

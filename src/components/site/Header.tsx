@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Home } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Container } from './Container'
@@ -20,6 +20,9 @@ export function Header({ variant = 'light' }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+
+  const isProduction = !import.meta.env.DEV
+  const homeUrl = isProduction ? 'https://salus-insurance-services.vercel.app/' : '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48)
@@ -72,6 +75,18 @@ export function Header({ variant = 'light' }: HeaderProps) {
           </nav>
 
           <div className="flex items-center gap-3">
+            <Button
+              asChild
+              variant={onDark ? 'inverse' : 'default'}
+              shape="pill"
+              size="sm"
+              className="hidden sm:inline-flex"
+            >
+              <a href={homeUrl} target={isProduction ? '_blank' : undefined} rel={isProduction ? 'noopener noreferrer' : undefined}>
+                <Home className="mr-2 size-4" />
+                Home
+              </a>
+            </Button>
             <Button asChild variant={onDark ? 'inverse' : 'default'} shape="pill" size="sm" className="hidden sm:inline-flex">
               <Link to="/quote">Get my quote</Link>
             </Button>
@@ -97,6 +112,12 @@ export function Header({ variant = 'light' }: HeaderProps) {
             className="fixed inset-x-0 top-[72px] z-40 border-b border-border bg-paper p-6 md:hidden"
           >
             <nav className="flex flex-col gap-1" aria-label="Mobile">
+              <Button asChild variant="default" shape="pill" className="w-full">
+                <a href={homeUrl} target={isProduction ? '_blank' : undefined} rel={isProduction ? 'noopener noreferrer' : undefined}>
+                  <Home className="mr-2 size-4" />
+                  Home
+                </a>
+              </Button>
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
